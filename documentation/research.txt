@@ -4,3 +4,4 @@ https://infoscience.epfl.ch/record/169879
 https://hal.inria.fr/hal-01099136v2/document
 Similar project, but for Rust - https://github.com/cessen/ropey
 Excellent Medium article - https://medium.com/underrated-data-structures-and-algorithms/rope-data-structure-e623d7862137
+https://iq.opengenus.org/rope-data-structure/
