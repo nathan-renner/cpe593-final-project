@@ -1,5 +1,3 @@
-Nathan:
-
 https://infoscience.epfl.ch/record/169879
 https://hal.inria.fr/hal-01099136v2/document
 Similar project, but for Rust - https://github.com/cessen/ropey
