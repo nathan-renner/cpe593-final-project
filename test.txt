@@ -1,0 +1,1 @@
+Hello, this is a test document. It isn't the full 100MB and thus slower due to rope data structures being slower on smaller sizes; however, this is a decent size to test with.
