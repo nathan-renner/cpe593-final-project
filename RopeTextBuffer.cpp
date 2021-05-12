@@ -152,6 +152,7 @@ public:
     void displayChunks(Node *start) {
         // Go inorder but only display nodes with strings (leaf nodes)
         if (start == nullptr) {
+			cout <<" Nothing to display" << endl;
             return;
         }
         else {
@@ -162,6 +163,8 @@ public:
             displayChunks(start -> right);
         }
     }
+	
+
     
     char searchForByte(int index, Node *start) {
         if (start -> weight < index && start -> right != nullptr ) {
@@ -174,6 +177,97 @@ public:
         }
         return start -> str.at(index - 1);
     }
+	void replaceByte(int index, char replace, Node *start) {
+		//similar to searchForByte but it replaces the char instead of returning
+        if (start -> weight < index && start -> right != nullptr ) {
+            // If index is greater than weight, subtract weight from index and move right
+            return replaceByte(index - start -> weight, replace, start -> right);
+        }
+        if (start -> left != nullptr) {
+            // If index is less, move left
+            return replaceByte(index, replace, start -> left);
+        }
+		start->str[index-1] = replace;//(index - 1, 1, replace);
+        
+    }
+	string GetString(int begin, int end, Node *start) {
+		//Uses searchForByte to find the string between the interval of begin and end
+		string result = "";
+		for(int i=begin; i <= end; i++) {
+			result += searchForByte(i, start);
+		}
+		return result;
+    }
+	
+	void replaceString(int begin, int end, string insert, Node *start) {
+		
+		int j = 0;
+		//Interval between begin and end is inclusive
+		if(insert.length() != (end - begin+1)) {
+			cout << "Sorry, the string lenght does not match the parameters" << endl;
+			return;
+		}
+		for(int i=begin; i <= end; i++) {
+			replaceByte(i, insert[j++], start);
+			
+		}
+	}
+	void deleteFile(Node *start) {
+		//Postorder and then delete
+	   if (start == nullptr) {
+		   cout << "Nothing To Delete" << endl;
+            return;
+        }
+            if(start -> left != nullptr)
+				deleteFile(start -> left);
+			
+			if(start -> right != nullptr)
+				deleteFile(start -> right);
+
+			delete start;
+        
+	}
+	void insertString(int begin, string insert, Node* start) {
+		//Node* end = new Node;
+		//end = split(begin);
+		//concatenation(insert, end);
+		//concatenation(start, insert);
+	}
+	
+	void deleteBytes(int begin, int end,  Node* start) {
+		//Node* endRope  = new Node;
+		//Node* deleteRope = new Node;
+		//endRope = split(end);
+		//deleteRope = split(begin);
+		//concatenation(start, endRope);
+		
+	}
+	
+	void writeChunks(Node *start, ofstream& outFile) {
+        // Go inorder to write strings (leaf nodes) to output file
+        if (start == nullptr) {
+            return;
+        }
+        else {
+            writeChunks(start -> left, outFile);
+            if (!start -> str.empty()) {
+               outFile << start -> str;
+            }
+           writeChunks(start -> right, outFile);
+        }
+    }
+	
+	void saveAsFile(Node *start) {
+		//Uses writeChunks to append all of the strings in the rope 
+		string fileName;
+		cout << "Write output file name " << endl;
+		cin >> fileName;
+		ofstream outFile (fileName);
+		writeChunks(start, outFile);
+		outFile.close();
+	}
+	
+	
 };
 
 
@@ -187,9 +281,15 @@ int main() {
     
     // Create rope
     Rope rope;
+	
     rope.createRopeWithFile(fileName);
-    
-    // rope.displayChunks(rope.root);
+	//rope.replaceString(7, 13, "123456", rope.root);
+	//rope.replaceString(7, 13, "1234567", rope.root);
+	rope.saveAsFile(rope.root);
+	//rope.deleteFile(rope.root);
+	//cout << rope.GetString(6, 25, rope.root) << endl;
+    //rope.root = nullptr;
+    //rope.displayChunks(rope.root);
     
     return 0;
 }
